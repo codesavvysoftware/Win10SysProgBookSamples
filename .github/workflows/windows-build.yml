@@ -20,4 +20,4 @@ jobs:
         shell: cmd
         run: |
           call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
-          msbuild C:\Users\tomha\Win10SysProgBookSamples\my-code\chap01\Chapter01.sln
+          
