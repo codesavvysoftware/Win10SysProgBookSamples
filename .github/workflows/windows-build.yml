@@ -1,0 +1,45 @@
+name: Windows Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: self-hosted  # Uses your personal Windows runner
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild Path
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build All MSBuild Solutions
+        shell: pwsh
+        run: |
+          Write-Host "Searching for .sln files..."
+          $solutions = Get-ChildItem -Recurse -Filter *.sln
+          if ($solutions.Count -eq 0) {
+            Write-Host "No .sln files found."
+          } else {
+            foreach ($sln in $solutions) {
+              Write-Host "Building: $($sln.FullName)"
+              msbuild $sln.FullName /p:Configuration=Debug /m
+              msbuild $sln.FullName /p:Configuration=Release /m
+            }
+          }
+
+      - name: Build All CMake Projects
+        shell: pwsh
+        run: |
+          Write-Host "Searching for CMakeLists.txt files..."
+          $cmakes = Get-ChildItem -Recurse -Filter CMakeLists.txt
+          foreach ($cmake in $cmakes) {
+            $dir = $cmake.Directory.FullName
+            Write-Host "Configuring and building CMake project in $dir"
+            cmake -S $dir -B "$dir/build"
+            cmake --build "$dir/build" --config Debug
+            cmake --build "$dir/build" --config Release
+          }
