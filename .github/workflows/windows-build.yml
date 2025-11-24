@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted  # Simple Uses your personal Windows runner for now
+    runs-on: self-hosted  # Uses your personal Windows runner for now
 
     steps:
       - name: Checkout Repository
@@ -17,6 +17,16 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Build All MSBuild Solutions
-        shell: cmd
+        shell: powershell
         run: |
-          msbuild my-code\chap01\Chapter01.sln /t:Build /p:Configuration=Debug
+          Write-Host "Searching for .sln files..."
+          $solutions = Get-ChildItem -Recurse -Filter *.sln
+          if ($solutions.Count -eq 0) {
+            Write-Host "No .sln files found."
+          } else {
+            foreach ($sln in $solutions) {
+              Write-Host "Building: $($sln.FullName)"
+              msbuild $sln.FullName /p:Configuration=Debug /m
+              msbuild $sln.FullName /p:Configuration=Release /m
+            }
+          }
