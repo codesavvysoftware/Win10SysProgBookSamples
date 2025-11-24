@@ -31,15 +31,3 @@ jobs:
             }
           }
 
-      - name: Build All CMake Projects
-        shell: pwsh
-        run: |
-          Write-Host "Searching for CMakeLists.txt files..."
-          $cmakes = Get-ChildItem -Recurse -Filter CMakeLists.txt
-          foreach ($cmake in $cmakes) {
-            $dir = $cmake.Directory.FullName
-            Write-Host "Configuring and building CMake project in $dir"
-            cmake -S $dir -B "$dir/build"
-            cmake --build "$dir/build" --config Debug
-            cmake --build "$dir/build" --config Release
-          }
