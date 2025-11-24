@@ -19,15 +19,5 @@ jobs:
       - name: Build All MSBuild Solutions
         shell: pwsh
         run: |
-          Write-Host "Searching for .sln files..."
-          $solutions = Get-ChildItem -Recurse -Filter *.sln
-          if ($solutions.Count -eq 0) {
-            Write-Host "No .sln files found."
-          } else {
-            foreach ($sln in $solutions) {
-              Write-Host "Building: $($sln.FullName)"
-              msbuild $sln.FullName /p:Configuration=Debug /m
-              msbuild $sln.FullName /p:Configuration=Release /m
-            }
-          }
-
+          call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+          msbuild C:\Users\tomha\Win10SysProgBookSamples\my-code\chap01\Chapter01.sln
