@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted  # Uses your personal Windows runner for now
+    runs-on: self-hosted  # Simple Uses your personal Windows runner for now
 
     steps:
       - name: Checkout Repository
