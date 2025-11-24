@@ -19,5 +19,4 @@ jobs:
       - name: Build All MSBuild Solutions
         shell: cmd
         run: |
-          call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
           msbuild my-code\chap01\Chapter01.sln /t:Build /p:Configuration=Debug
